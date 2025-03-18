@@ -23,6 +23,7 @@ for (v,c) in zip(vs, cypher):
 
     # now you have to add similar restrictions on `v` that express, that it is a lower-case-ASCII-character
     # you can add restrictions using the normal symbols you know from python (`<`, `>`, etc.)
+    s.add(v >= 97, v <= 122)
     
 # in case the problem is underconstrained, z3 might find the wrong key on the first try
 # you can exclude wrong keys explicitly
