@@ -4,4 +4,4 @@ venv
 *.fls
 *.fdb_latexmk
 *.synctex.gz
-submission.pdf
+submission.*
