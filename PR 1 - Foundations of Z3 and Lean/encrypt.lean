@@ -1,5 +1,3 @@
-
-
 abbrev BV256 : Type := BitVec 256
 
 -- The following theorem specifies that two bit vectors (of length 256) are equal
@@ -27,8 +25,9 @@ intro i hi
 simp
 
 theorem BV256.demorgan₂ {a b : BV256} : ~~~(a ||| b) = ~~~a &&& ~~~b := by
-  sorry
-
+  apply BV256.eq_of_getElem_eq
+  intro i hi
+  simp
 
 def BV256.nand (a b : BV256) : BV256 :=
   ~~~ (a &&& b)
@@ -45,11 +44,17 @@ def decrypt (cyphertext key: BV256) : BV256 :=
 
 -- Hint: you may need the BV256.demorgan₁ theorem
 theorem xor_identity {a : BV256} : a.xor (0#256) = a := by
-  sorry
+  unfold BV256.xor BV256.nand
+  apply BV256.eq_of_getElem_eq
+  intro i hi
+  cases a[i] <;> simp
 
 -- Hint: you may need the BV256.and_not_self theorem
 theorem xor_self {a : BV256} : (a.xor a) = (0#256) := by
-  sorry
+  unfold BV256.xor BV256.nand
+  apply BV256.eq_of_getElem_eq
+  intro i hi
+  cases a[i] <;> simp
 
 -- Hint: you may need the BV256.demorgan₁, BV256.demorgan₂ theorems
 -- Hint 2: when working with booleans, e.g., if you apply BV256.eq_of_getElem_eq,
@@ -61,9 +66,14 @@ theorem xor_self {a : BV256} : (a.xor a) = (0#256) := by
 -- cases a[i] <;> cases b[i] will generate 4 goal, one for each combination
 -- of bool assignments to a[i] and b[i]
 theorem xor_assoc {a b c : BV256} : (a.xor b).xor c = a.xor (b.xor c) := by
-  sorry
+  unfold BV256.xor BV256.nand
+  apply BV256.eq_of_getElem_eq
+  intro i hi
+  cases a[i] <;> cases b[i] <;> cases c[i] <;> simp
 
 -- Hint: you may need to use the above theorems about xor
 -- Avoid using the simp tactic in this proof.
 theorem encrypt_correct : ∀ message key, decrypt (encrypt message key) key = message := by
-  sorry
+  intros message key
+  unfold encrypt decrypt
+  rw [xor_assoc, xor_self, xor_identity]
