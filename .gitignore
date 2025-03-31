@@ -5,3 +5,4 @@ venv
 *.fdb_latexmk
 *.synctex.gz
 submission.*
+*.rar
